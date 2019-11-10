@@ -1,3 +1,4 @@
+*.tar.gz
 opt/
 build-binutils/
 build-binutils-cross/
