@@ -1,0 +1,9 @@
+export ROOTDIR=/mnt/tmp-data/sebastian/abanu-toolchain
+export PREFIX="$ROOTDIR/opt/gcc-x.y.z"
+
+mkdir -p build-binutils
+cd build-binutils
+../binutils-gdb/configure --prefix="$PREFIX" --disable-nls --disable-werror
+
+make -j17
+make install -j17
