@@ -2,3 +2,4 @@ opt/
 build-binutils/
 build-binutils-cross/
 build-gcc/
+build-gcc-cross/

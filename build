@@ -1,12 +1,16 @@
 export ROOTDIR=/mnt/tmp-data/sebastian/abanu-toolchain
 export PREFIX="$ROOTDIR/opt/gcc-x.y.z"
 
+# bootstrap binutils
+
 #cd $ROOTDIR
 #mkdir -p build-binutils
 #cd build-binutils
 #../binutils-gdb/configure --prefix="$PREFIX" --disable-nls --disable-werror
 #make -j17
 #make install -j17
+
+# bootstrap gcc
 
 #cd $ROOTDIR
 #mkdir -p build-gcc
@@ -21,10 +25,24 @@ export PREFIX="$ROOTDIR/opt/cross"
 export TARGET=i686-elf
 export PATH="$PREFIX/bin:$PATH"
 
+# build cross binutils
+
+#cd $ROOTDIR
+# mkdir build-binutils-cross
+#cd build-binutils-cross
+#../binutils-gdb/configure --target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
+#make -j17
+#make install -j17
+
+# build cross gcc
 
 cd $ROOTDIR
- mkdir build-binutils-cross
-cd build-binutils-cross
-../binutils-gdb/configure --target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
-make -j17
-make install -j17
+# The $PREFIX/bin dir _must_ be in the PATH. We did that above.
+which -- $TARGET-as || echo $TARGET-as is not in the PATH
+mkdir -p build-gcc-cross
+cd build-gcc-cross
+../gcc/configure --target=$TARGET --prefix="$PREFIX" --disable-nls --enable-languages=c,c++ --without-headers
+make make all-gcc -j13
+make all-target-libgcc -j13
+make install-gcc -j13
+make install-target-libgcc -j13
