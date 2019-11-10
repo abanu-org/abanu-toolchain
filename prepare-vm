@@ -10,7 +10,7 @@ dpkg --add-architecture i386
 
 apt-get -y install zsh davfs2 ncdu apt-file htop dirmngr telnet mc build-essential \
     tmux traceroute dnsutils netcat bindfs gettext jq apt-file moreutils pssh \
-    bsdmainutils  haproxy colordiff git
+    bsdmainutils  haproxy colordiff git wget
 
 # sshd
 ./edit-file replace /etc/ssh/sshd_config "PasswordAuthentication no" "PasswordAuthentication yes"

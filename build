@@ -1,38 +1,39 @@
+GCC_VERSION=8.2.0
 export ROOTDIR=/mnt/tmp-data/sebastian/abanu-toolchain
-export PREFIX="$ROOTDIR/opt/gcc-x.y.z"
+export PREFIX="$ROOTDIR/opt/gcc-$GCC_VERSION"
 
 # bootstrap binutils
 
-#cd $ROOTDIR
-#mkdir -p build-binutils
-#cd build-binutils
-#../binutils-gdb/configure --prefix="$PREFIX" --disable-nls --disable-werror
-#make -j17
-#make install -j17
+cd $ROOTDIR
+mkdir -p build-binutils
+cd build-binutils
+../binutils-gdb/configure --prefix="$PREFIX" --disable-nls --disable-werror
+make -j12
+make install -j12
 
 # bootstrap gcc
 
-#cd $ROOTDIR
-#mkdir -p build-gcc
-#cd build-gcc
-#../gcc/configure --prefix="$PREFIX" --disable-nls --enable-languages=c,c++
-#make -j17
-#make install -j17
+cd $ROOTDIR
+mkdir -p build-gcc
+cd build-gcc
+../gcc/configure --prefix="$PREFIX" --disable-nls --enable-languages=c,c++
+make -j12
+make install -j12
 
-export PATH="$ROOTDIR/opt/gcc-x.y.z/bin:$PATH"
+export PATH="$ROOTDIR/opt/gcc-$GCC_VERSION/bin:$PATH"
 
-export PREFIX="$ROOTDIR/opt/cross"
+export PREFIX="$ROOTDIR/opt/gcc-$GCC_VERSION-cross"
 export TARGET=i686-elf
 export PATH="$PREFIX/bin:$PATH"
 
 # build cross binutils
 
-#cd $ROOTDIR
-# mkdir build-binutils-cross
-#cd build-binutils-cross
-#../binutils-gdb/configure --target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
-#make -j17
-#make install -j17
+cd $ROOTDIR
+ mkdir build-binutils-cross
+cd build-binutils-cross
+../binutils-gdb/configure --target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
+make -j12
+make install -j12
 
 # build cross gcc
 
