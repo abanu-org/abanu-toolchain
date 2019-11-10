@@ -47,3 +47,6 @@ make make all-gcc -j13
 make all-target-libgcc -j13
 make install-gcc -j13
 make install-target-libgcc -j13
+
+cd $ROOTDIR
+#tar cf - opt | pigz > gcc-bin.tar.gz
