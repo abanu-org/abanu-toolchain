@@ -1,0 +1,36 @@
+#!/bin/sh
+
+cd $(dirname $0)
+set -e
+
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get -y install zsh davfs2 ncdu apt-file htop dirmngr telnet mc build-essential \
+    tmux traceroute dnsutils netcat bindfs gettext jq apt-file moreutils pssh \
+    bsdmainutils  haproxy colordiff git
+
+# sshd
+./edit-file replace /etc/ssh/sshd_config "PasswordAuthentication no" "PasswordAuthentication yes"
+systemctl restart sshd
+
+mkfs.ext4 /dev/nvme0n1
+
+# Data Disk
+mkdir -p /mnt/tmp-data
+./edit-file append /etc/fstab "/dev/nvme0n1 /mnt/tmp-data ext4 defaults 1 1"
+mount -a
+
+# Setup User root
+chsh -s /bin/zsh root
+
+# Setup User sebastian
+groupadd -g 70010 sebastian && useradd -u 70010 -m -g sebastian sebastian     && chsh -s /bin/zsh sebastian
+./edit-file append /etc/fstab "/mnt/tmp-data/home/sebastian /home/sebastian none bind 0 0" 
+mount -a
+echo "sebastian ALL=(ALL) ALL" > /etc/sudoers.d/sebastian
+
+mount -a
+
+# Fix Permissions
+chmod go-rwx /home/*
+
