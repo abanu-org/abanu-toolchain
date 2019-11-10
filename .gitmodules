@@ -1,0 +1,6 @@
+[submodule "binutils-gdb"]
+	path = binutils-gdb
+	url = git@github.com:abanu-org/binutils-gdb.git
+[submodule "gcc"]
+	path = gcc
+	url = git@github.com:abanu-org/gcc.git
