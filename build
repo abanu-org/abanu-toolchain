@@ -9,7 +9,7 @@ mkdir -p build-binutils
 cd build-binutils
 ../binutils-gdb/configure --prefix="$PREFIX" --disable-nls --disable-werror
 make -j12
-make install -j12
+make install-strip -j12
 
 # bootstrap gcc
 
@@ -18,7 +18,7 @@ mkdir -p build-gcc
 cd build-gcc
 ../gcc/configure --prefix="$PREFIX" --disable-nls --enable-languages=c,c++
 make -j12
-make install -j12
+make install-strip -j12
 
 export PATH="$ROOTDIR/opt/gcc-$GCC_VERSION/bin:$PATH"
 
@@ -33,7 +33,7 @@ cd $ROOTDIR
 cd build-binutils-cross
 ../binutils-gdb/configure --target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
 make -j12
-make install -j12
+make install-strip -j12
 
 # build cross gcc
 
