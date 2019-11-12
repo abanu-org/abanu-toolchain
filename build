@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -x
+
 GCC_VERSION=8.2.0
 export ROOTDIR=/mnt/tmp-data/sebastian/abanu-toolchain
 export PREFIX="$ROOTDIR/opt/gcc-$GCC_VERSION"
@@ -22,7 +24,7 @@ cd build-gcc
 make -j12
 make install-strip -j12
 
-export PATH="$ROOTDIR/opt/gcc-$GCC_VERSION/bin:$PATH"
+export PATH="$ROOTDIR/opt/gcc-$GCC_VERSION-cross/bin:$PATH"
 
 export PREFIX="$ROOTDIR/opt/gcc-$GCC_VERSION-cross"
 export TARGET=i686-elf
@@ -33,7 +35,7 @@ export PATH="$PREFIX/bin:$PATH"
 # build cross binutils
 
 cd $ROOTDIR
- mkdir build-binutils-cross
+mkdir build-binutils-cross
 cd build-binutils-cross
 ../binutils-gdb/configure --target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
 make -j12
@@ -47,7 +49,7 @@ which -- $TARGET-as || echo $TARGET-as is not in the PATH
 mkdir -p build-gcc-cross
 cd build-gcc-cross
 ../gcc/configure --target=$TARGET --prefix="$PREFIX" --disable-nls --enable-languages=c,c++ --without-headers
-make make all-gcc -j13
+make all-gcc -j13
 make all-target-libgcc -j13
 make install-strip-gcc -j13
 make install-strip-target-libgcc -j13
