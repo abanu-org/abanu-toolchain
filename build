@@ -58,4 +58,4 @@ make install-strip-gcc
 make install-strip-target-libgcc
 
 cd $ROOTDIR
-#tar cf - opt | pigz > gcc-bin.tar.gz
+tar cf - opt | pigz > gcc-bin.tar.gz
