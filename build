@@ -1,6 +1,9 @@
 #!/bin/sh
 
 set -x
+export MAKEFLAGS=-j` nproc`
+export CFLAGS="-s"
+export CXXFLAGS="-s"
 
 GCC_VERSION=8.2.0
 export ROOTDIR=/mnt/tmp-data/sebastian/abanu-toolchain
@@ -12,8 +15,8 @@ cd $ROOTDIR
 mkdir -p build-binutils
 cd build-binutils
 ../binutils-gdb/configure --prefix="$PREFIX" --disable-nls --disable-werror
-make -j12
-make install-strip -j12
+make
+make install
 
 # bootstrap gcc
 
@@ -21,8 +24,8 @@ cd $ROOTDIR
 mkdir -p build-gcc
 cd build-gcc
 ../gcc/configure --prefix="$PREFIX" --disable-nls --enable-languages=c,c++
-make -j12
-make install-strip -j12
+make
+make install-strip
 
 export PATH="$ROOTDIR/opt/gcc-$GCC_VERSION-cross/bin:$PATH"
 
@@ -30,16 +33,16 @@ export PREFIX="$ROOTDIR/opt/gcc-$GCC_VERSION-cross"
 export TARGET=i686-elf
 export PATH="$PREFIX/bin:$PATH"
 
-
-
 # build cross binutils
 
 cd $ROOTDIR
 mkdir build-binutils-cross
 cd build-binutils-cross
 ../binutils-gdb/configure --target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
-make -j12
-make install-strip -j12
+make
+make install
+
+echo $PATH
 
 # build cross gcc
 
@@ -50,9 +53,9 @@ mkdir -p build-gcc-cross
 cd build-gcc-cross
 ../gcc/configure --target=$TARGET --prefix="$PREFIX" --disable-nls --enable-languages=c,c++ --without-headers
 make all-gcc -j13
-make all-target-libgcc -j13
-make install-strip-gcc -j13
-make install-strip-target-libgcc -j13
+make all-target-libgcc
+make install-strip-gcc
+make install-strip-target-libgcc
 
 cd $ROOTDIR
 #tar cf - opt | pigz > gcc-bin.tar.gz
