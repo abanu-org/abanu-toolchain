@@ -1,12 +1,15 @@
 #!/bin/sh
 
 set -x
+
+ORIGIN_DIR=$(pwd)
+ROOTDIR=$(dirname $0)
+
 export MAKEFLAGS=-j` nproc`
 export CFLAGS="-s"
 export CXXFLAGS="-s"
 
 GCC_VERSION=8.2.0
-export ROOTDIR=/mnt/tmp-data/sebastian/abanu-toolchain
 export PREFIX="$ROOTDIR/opt/gcc-$GCC_VERSION"
 
 # bootstrap binutils
